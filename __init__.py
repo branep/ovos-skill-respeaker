@@ -38,6 +38,7 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
     def enable(self):
         LOG.debug("initializing")
+        pixel_ring.think()
 
         self.add_event('recognizer_loop:wakeword',
             self.handle_listener_wakeup)
