@@ -15,10 +15,10 @@
 import time
 
 from mycroft.messagebus.message import Message
-from mycroft.skills.core import MycroftSkill, intent_handle
+from mycroft.skills.core import MycroftSkill, intent_handler
 from adapt.intent import IntentBuilder
 from mycroft.util.log import LOG
-from mycroft import intent_file_handle
+from mycroft import intent_file_handler
 
 from pixel_ring import pixel_ring
 from gpiozero import LED
@@ -84,12 +84,12 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         LOG.debug("speak")
         pixel_ring.speak()
 
-    @intent_handle(IntentBuilder("").require("EnablePixelRing"))
+    @intent_handler(IntentBuilder("").require("EnablePixelRing"))
     def handle_enable_pixel_ring_intent(self, message):
         self.enable()
         self.speak_dialog("EnablePixelRing")
 
-    @intent_handle(IntentBuilder("").require("DisablePixelRing"))
+    @intent_handler(IntentBuilder("").require("DisablePixelRing"))
     def handle_disable_pixel_ring_intent(self, message):
         self.disable()
         self.speak_dialog("DisablePixelRing")
