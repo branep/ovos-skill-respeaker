@@ -55,11 +55,6 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         #self.add_event('mycroft.skill.handle.complete',
         #    self.handle_listener_off)
 
-        self.add_event('recognizer_loop:audio_output_start',
-            self.handle_listener_speak)
-        self.add_event('recognizer_loop:audio_output_end',
-            self.handle_listener_off)
-
         pixel_ring.off()
 
     def disable(self):
