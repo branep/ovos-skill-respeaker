@@ -20,7 +20,9 @@ from adapt.intent import IntentBuilder
 from mycroft.util.log import LOG
 from mycroft import intent_file_handler
 
-from pixel_ring import pixel_ring
+#from pixels import pixels
+from pixels import Pixels, pixels
+
 from gpiozero import LED
 
 class ReSpeaker_4mic_hat(MycroftSkill):
@@ -31,12 +33,12 @@ class ReSpeaker_4mic_hat(MycroftSkill):
     def initialize(self):
         power = LED(5)
         power.on()
-        pixel_ring.set_brightness(10)
+        pixels.set_brightness(10)
         self.enable()
 
     def enable(self):
         LOG.debug("initializing")
-        pixel_ring.wakeup()
+        pixels.wakeup()
         time.sleep(1)
 
         self.add_event('recognizer_loop:wakeword',
@@ -54,7 +56,7 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         #self.add_event('mycroft.skill.handle.complete',
         #    self.handle_listener_off)
 
-        pixel_ring.off()
+        pixels.off()
 
     def disable(self):
         LOG.debug("shutdown")
@@ -66,41 +68,41 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         #self.remove_event('mycroft.skill.handle.complete')
 
     def shutdown(self):
-        pixel_ring.off()
+        pixels.off()
 
     def handle_listener_wakeup(self, message):
         LOG.debug("wakeup")
-        pixel_ring.listen()
+        pixels.listen()
 
     def handle_listener_off(self, message):
         LOG.debug("off")
-        pixel_ring.off()
+        pixels.off()
 
     def handle_listener_think(self, message):
         LOG.debug("think")
-        pixel_ring.think()
+        pixels.think()
 
     def handle_listener_speak(self, message):
         LOG.debug("speak")
-        pixel_ring.speak()
+        pixels.speak()
 
     @intent_handler(IntentBuilder("").require("PixelDemo"))
     def handle_pixel_demo(self, message):
-        pixel_ring.think()
+        pixels.think()
         time.sleep(3)
-        pixel_ring.speak()
+        pixels.speak()
         time.sleep(3)
-        pixel_ring.off()
+        pixels.off()
         self.speak_dialog("DemoComplete")
 
     @intent_handler(IntentBuilder("").require("EnablePixelRing"))
-    def handle_enable_pixel_ring_intent(self, message):
+    def handle_enable_pixels_intent(self, message):
         self.disable()
         self.enable()
         self.speak_dialog("EnablePixelRing")
 
     @intent_handler(IntentBuilder("").require("DisablePixelRing"))
-    def handle_disable_pixel_ring_intent(self, message):
+    def handle_disable_pixels_intent(self, message):
         self.disable()
         self.speak_dialog("DisablePixelRing")
 
