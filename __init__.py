@@ -88,7 +88,6 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
     @intent_handler(IntentBuilder("").require("PixelDemo"))
     def handle_pixel_demo(self, message):
-        self.enable()
         pixel_ring.think()
         time.sleep(3)
         pixel_ring.speak()
@@ -98,6 +97,7 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
     @intent_handler(IntentBuilder("").require("EnablePixelRing"))
     def handle_enable_pixel_ring_intent(self, message):
+        self.disable()
         self.enable()
         self.speak_dialog("EnablePixelRing")
 
