@@ -63,8 +63,8 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         self.remove_event('recognizer_loop:record_end')
         self.remove_event('recognizer_loop:audio_output_start')
         self.remove_event('recognizer_loop:audio_output_end')
-        self.remove_event('mycroft.skill.handle.start')
-        self.remove_event('mycroft.skill.handle.complete')
+        #self.remove_event('mycroft.skill.handle.start')
+        #self.remove_event('mycroft.skill.handle.complete')
 
     def shutdown(self):
         pixel_ring.off()
@@ -84,6 +84,17 @@ class ReSpeaker_4mic_hat(MycroftSkill):
     def handle_listener_speak(self, message):
         LOG.debug("speak")
         pixel_ring.speak()
+
+    @intent_handler(IntentBuilder("").require("PixelDemo"))
+    def handle_pixel_demo(self, message):
+        self.enable()
+        pixel_ring.wakeup()
+        time.sleep(3)
+        pixel_ring.think()
+        time.sleep(3)
+        pixel_ring.speak()
+        time.sleep(3)
+        pixel_ring.off()
 
     @intent_handler(IntentBuilder("").require("EnablePixelRing"))
     def handle_enable_pixel_ring_intent(self, message):
