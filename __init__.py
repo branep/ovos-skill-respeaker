@@ -26,7 +26,7 @@ from gpiozero import LED
 class ReSpeaker_4mic_hat(MycroftSkill):
 
     def __init__(self):
-        super(ReSpeaker_4mic_hat, self).__init__(name="ReSpeaker_4mic_hat")
+        super().__init__()
 
     def initialize(self):
         power = LED(5)
