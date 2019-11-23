@@ -20,8 +20,7 @@ from adapt.intent import IntentBuilder
 from mycroft.util.log import LOG
 from mycroft import intent_file_handler
 
-#from pixels import pixels
-from pixels import Pixels, pixels
+from .pixels import Pixels, pixels
 
 from gpiozero import LED
 
@@ -31,9 +30,9 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         super().__init__()
 
     def initialize(self):
-        power = LED(5)
-        power.on()
-        pixels.set_brightness(10)
+        #power = LED(5)
+        #power.on()
+        #pixels.set_brightness(10)
         self.enable()
 
     def enable(self):

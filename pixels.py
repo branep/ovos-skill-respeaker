@@ -1,5 +1,5 @@
 
-import apa102
+from . import apa102
 import time
 import threading
 from gpiozero import LED
@@ -8,8 +8,8 @@ try:
 except ImportError:
     import Queue as Queue
 
-from alexa_led_pattern import AlexaLedPattern
-from google_home_led_pattern import GoogleHomeLedPattern
+from .alexa_led_pattern import AlexaLedPattern
+from .google_home_led_pattern import GoogleHomeLedPattern
 
 class Pixels:
     PIXELS_N = 12
