@@ -42,7 +42,7 @@ class ReSpeaker_4mic_hat(MycroftSkill):
 
         self.add_event('recognizer_loop:wakeword',
             self.handle_listener_wakeup)
-        self.add_event('recognizer_loop:record_end',
+        self.add_event('recognizer_loop:utterance',
             self.handle_listener_think)
 
         self.add_event('recognizer_loop:audio_output_start',
@@ -50,9 +50,10 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         self.add_event('recognizer_loop:audio_output_end',
             self.handle_listener_off)
 
+        self.add_event('recognizer_loop:record_end',
+            self.handle_listener_off)
         self.add_event('mycroft.ready',
             self.handle_listener_off)
-
         self.add_event('complete_intent_failure',
             self.handle_listener_off)
 
