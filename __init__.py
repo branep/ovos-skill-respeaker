@@ -40,38 +40,38 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         pixels.wakeup()
         time.sleep(1)
 
+        self.add_event('mycroft.ready',
+            self.handle_listener_off)
         self.add_event('recognizer_loop:wakeword',
             self.handle_listener_wakeup)
         self.add_event('recognizer_loop:utterance',
             self.handle_listener_think)
-
         self.add_event('recognizer_loop:audio_output_start',
             self.handle_listener_speak)
         self.add_event('recognizer_loop:audio_output_end',
             self.handle_listener_off)
-
         self.add_event('recognizer_loop:record_end',
-            self.handle_listener_off)
-        self.add_event('mycroft.ready',
             self.handle_listener_off)
         self.add_event('complete_intent_failure',
             self.handle_listener_off)
-
-        #self.add_event('mycroft.skill.handle.start',
-        #    self.handle_listener_think)
-        #self.add_event('mycroft.skill.handle.complete',
-        #    self.handle_listener_off)
+        self.add_event('mycroft.volume.increase',
+            self.handle_listener_off)
+        self.add_event('mycroft.volume.decrease',
+            self.handle_listener_off)
 
         pixels.off()
 
     def disable(self):
         LOG.debug("shutdown")
-        self.remove_event('recognizer_loop:wakeup')
-        self.remove_event('recognizer_loop:record_end')
+        self.remove_event('mycroft:ready')
+        self.remove_event('recognizer_loop:wakeword')
+        self.remove_event('recognizer_loop:utterance')
         self.remove_event('recognizer_loop:audio_output_start')
         self.remove_event('recognizer_loop:audio_output_end')
-        #self.remove_event('mycroft.skill.handle.start')
-        #self.remove_event('mycroft.skill.handle.complete')
+        self.remove_event('recognizer_loop:record_end')
+        self.remove_event('complete_intent_failure')
+        self.remove_event('mycroft.volume.increase')
+        self.remove_event('mycroft.volume.decrease')
 
     def shutdown(self):
         pixels.off()
