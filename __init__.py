@@ -30,12 +30,6 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         super().__init__()
 
     def initialize(self):
-        #power = LED(5)
-        #power.on()
-        #pixels.set_brightness(10)
-        self.enable()
-
-    def enable(self):
         LOG.debug("initializing")
         pixels.wakeup()
         time.sleep(1)
