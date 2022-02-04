@@ -52,6 +52,8 @@ class ReSpeaker_4mic_hat(MycroftSkill):
             self.handle_listener_off)
         self.add_event('mycroft.volume.decrease',
             self.handle_listener_off)
+        self.add_event('mycroft.skill.handler.complete',
+            self.handle_listener_off)
 
         pixels.off()
 
@@ -66,6 +68,7 @@ class ReSpeaker_4mic_hat(MycroftSkill):
         self.remove_event('complete_intent_failure')
         self.remove_event('mycroft.volume.increase')
         self.remove_event('mycroft.volume.decrease')
+        self.remove_event('mycroft.skill.handler.complete')
 
     def shutdown(self):
         pixels.off()
