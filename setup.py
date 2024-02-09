@@ -7,7 +7,7 @@ BASEDIR = os.path.abspath(os.path.dirname(__file__))
 def get_version():
     """Find the version of the package"""
     version = None
-    version_file = os.path.join(BASEDIR, "ovos_respeaker_skill", "version.py")
+    version_file = os.path.join(BASEDIR, "ovos_skill_respeaker", "version.py")
     major, minor, build, alpha = (None, None, None, None)
     with open(version_file) as f:
         for line in f:
@@ -49,10 +49,10 @@ def required(requirements_file):
 
 
 setup(
-    name="ovos-respeaker-skill",
+    name="ovos-skill-respeaker",
     version=get_version(),
-    packages=["ovos_respeaker_skill"],
+    packages=["ovos_skill_respeaker"],
     license="Apache2",
-    install_requires=required("ovos_respeaker_skill/requirements.txt"),
+    install_requires=required("ovos_skill_respeaker/requirements.txt"),
     description="Ovos Respeaker skill",
 )
