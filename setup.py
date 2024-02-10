@@ -1,58 +1,49 @@
-import os
+#!/usr/bin/env python3
 from setuptools import setup
-
-BASEDIR = os.path.abspath(os.path.dirname(__file__))
-
-
-def get_version():
-    """Find the version of the package"""
-    version = None
-    version_file = os.path.join(BASEDIR, "ovos_skill_respeaker", "version.py")
-    major, minor, build, alpha = (None, None, None, None)
-    with open(version_file) as f:
-        for line in f:
-            if "VERSION_MAJOR" in line:
-                major = line.split("=")[1].strip()
-            elif "VERSION_MINOR" in line:
-                minor = line.split("=")[1].strip()
-            elif "VERSION_BUILD" in line:
-                build = line.split("=")[1].strip()
-            elif "VERSION_ALPHA" in line:
-                alpha = line.split("=")[1].strip()
-
-            if (major and minor and build and alpha) or "# END_VERSION_BLOCK" in line:
-                break
-    version = f"{major}.{minor}.{build}"
-    if alpha and int(alpha) > 0:
-        version += f"a{alpha}"
-    return version
+import os
+from os import walk, path
 
 
-def package_files(directory):
-    paths = []
-    for path, directories, filenames in os.walk(directory):
-        for filename in filenames:
-            paths.append(os.path.join("..", path, filename))
-    return paths
+URL = "https://github.com/branep/ovos-skill-respeaker"
+SKILL_CLAZZ = "ReSpeaker_4mic_hat"  # needs to match __init__.py class name
+PYPI_NAME = "ovos-skill-respeaker"  # pip install PYPI_NAME
 
 
-def required(requirements_file):
-    """Read requirements file and remove comments and empty lines."""
-    with open(os.path.join(BASEDIR, requirements_file), "r") as f:
-        requirements = f.read().splitlines()
-        if "MYCROFT_LOOSE_REQUIREMENTS" in os.environ:
-            print("USING LOOSE REQUIREMENTS!")
-            requirements = [
-                r.replace("==", ">=").replace("~=", ">=") for r in requirements
-            ]
-        return [pkg for pkg in requirements if pkg.strip() and not pkg.startswith("#")]
+# below derived from github url to ensure standard skill_id
+SKILL_AUTHOR, SKILL_NAME = URL.split(".com/")[-1].split("/")
+SKILL_PKG = SKILL_NAME.lower().replace("-", "_")
+PLUGIN_ENTRY_POINT = (
+    f"{SKILL_NAME.lower()}.{SKILL_AUTHOR.lower()}={SKILL_PKG}:{SKILL_CLAZZ}"
+)
+# skill_id=package_name:SkillClass
+
+
+def find_resource_files():
+    # add any folder with files your skill uses here!
+    resource_base_dirs = ("locale", "res", "vocab", "dialog", "regex", "skill")
+    base_dir = path.dirname(__file__)
+    package_data = ["*.json"]
+    for res in resource_base_dirs:
+        if path.isdir(path.join(base_dir, res)):
+            for directory, _, files in walk(path.join(base_dir, res)):
+                if files:
+                    package_data.append(
+                        path.join(directory.replace(base_dir, "").lstrip("/"), "*")
+                    )
+    return package_data
 
 
 setup(
-    name="ovos-skill-respeaker",
-    version=get_version(),
-    packages=["ovos_skill_respeaker"],
-    license="Apache2",
-    install_requires=required("ovos_skill_respeaker/requirements.txt"),
-    description="Ovos Respeaker skill",
+    name=PYPI_NAME,
+    version="0.1.2",
+    url=URL,
+    package_dir={SKILL_PKG: ""},
+    package_data={SKILL_PKG: find_resource_files()},
+    packages=[SKILL_PKG],
+    description="Ovos respeaker lights skill",
+    author="branep",
+    license="Apache-2.0",
+    include_package_data=True,
+    keywords="ovos skill plugin",
+    entry_points={"ovos.plugin.skill": PLUGIN_ENTRY_POINT},
 )
