@@ -4,9 +4,9 @@ import os
 from os import walk, path
 
 
-URL = "https://github.com/branep/ovos-skill-respeaker"
-SKILL_CLAZZ = "ReSpeaker_4mic_hat"  # needs to match __init__.py class name
 PYPI_NAME = "ovos-skill-respeaker"  # pip install PYPI_NAME
+URL = f"https://github.com/branep/{PYPI_NAME}"
+SKILL_CLAZZ = "Respeaker 4Mic Hat skill"  # needs to match __init__.py class name
 
 
 # below derived from github url to ensure standard skill_id
@@ -18,9 +18,23 @@ PLUGIN_ENTRY_POINT = (
 # skill_id=package_name:SkillClass
 
 
+def get_requirements(requirements_filename: str):
+    requirements_file = path.join(
+        path.abspath(path.dirname(__file__)), requirements_filename
+    )
+    with open(requirements_file, "r", encoding="utf-8") as r:
+        requirements = r.readlines()
+    requirements = [
+        r.strip() for r in requirements if r.strip() and not r.strip().startswith("#")
+    ]
+    if "MYCROFT_LOOSE_REQUIREMENTS" in os.environ:
+        print("USING LOOSE REQUIREMENTS!")
+        requirements = [r.replace("==", ">=").replace("~=", ">=") for r in requirements]
+    return requirements
+
+
 def find_resource_files():
-    # add any folder with files your skill uses here!
-    resource_base_dirs = ("locale", "res", "vocab", "dialog", "regex", "skill")
+    resource_base_dirs = ("locale", "ui", "vocab", "dialog", "regex", "skill")
     base_dir = path.dirname(__file__)
     package_data = ["*.json"]
     for res in resource_base_dirs:
@@ -33,17 +47,49 @@ def find_resource_files():
     return package_data
 
 
+with open("README.md", "r") as f:
+    long_description = f.read()
+
+
+def get_version():
+    """Find the version of this skill"""
+    version_file = path.join(
+        path.dirname(__file__), "ovos_skill_respeaker", "version.py"
+    )
+    major, minor, build, alpha = (None, None, None, None)
+    with open(version_file) as f:
+        for line in f:
+            if "VERSION_MAJOR" in line:
+                major = line.split("=")[1].strip()
+            elif "VERSION_MINOR" in line:
+                minor = line.split("=")[1].strip()
+            elif "VERSION_BUILD" in line:
+                build = line.split("=")[1].strip()
+            elif "VERSION_ALPHA" in line:
+                alpha = line.split("=")[1].strip()
+
+            if (major and minor and build and alpha) or "# END_VERSION_BLOCK" in line:
+                break
+    version = f"{major}.{minor}.{build}"
+    if int(alpha):
+        version += f"a{alpha}"
+    return version
+
+
 setup(
     name=PYPI_NAME,
-    version="0.1.2",
+    version=get_version(),
+    description="ovos respeaker hat skill",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     url=URL,
+    author="Bràné",
+    license="Apache-2.0",
     package_dir={SKILL_PKG: ""},
     package_data={SKILL_PKG: find_resource_files()},
     packages=[SKILL_PKG],
-    description="Ovos respeaker lights skill",
-    author="branep",
-    license="Apache-2.0",
     include_package_data=True,
+    install_requires=get_requirements("ovos_respeaker_skill/requirements.txt"),
     keywords="ovos skill plugin",
     entry_points={"ovos.plugin.skill": PLUGIN_ENTRY_POINT},
 )
