@@ -91,7 +91,7 @@ setup(
     package_data={SKILL_PKG: find_resource_files()},
     packages=[SKILL_PKG],
     include_package_data=True,
-    install_requires=get_requirements("ovos_respeaker_skill/requirements.txt"),
+    install_requires=get_requirements("requirements.txt"),
     keywords="ovos skill plugin",
     entry_points={"ovos.plugin.skill": PLUGIN_ENTRY_POINT},
 )
