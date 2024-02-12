@@ -20,7 +20,9 @@ PLUGIN_ENTRY_POINT = (
 
 def get_requirements(requirements_filename: str):
     requirements_file = path.join(
-        path.abspath(path.dirname(__file__)), requirements_filename
+        path.abspath(path.dirname(__file__)),
+        SKILL_PKG,
+        requirements_filename,
     )
     with open(requirements_file, "r", encoding="utf-8") as r:
         requirements = r.readlines()
