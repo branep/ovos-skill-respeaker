@@ -6,7 +6,7 @@ from os import walk, path
 
 PYPI_NAME = "ovos-skill-respeaker"  # pip install PYPI_NAME
 URL = f"https://github.com/branep/{PYPI_NAME}"
-SKILL_CLAZZ = "Respeaker 4Mic Hat skill"  # needs to match __init__.py class name
+SKILL_CLAZZ = "ReSpeaker_4mic_hat"  # needs to match __init__.py class name
 
 
 # below derived from github url to ensure standard skill_id
