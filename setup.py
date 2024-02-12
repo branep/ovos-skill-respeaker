@@ -12,9 +12,7 @@ SKILL_CLAZZ = "ReSpeaker_4mic_hat"  # needs to match __init__.py class name
 # below derived from github url to ensure standard skill_id
 SKILL_AUTHOR, SKILL_NAME = URL.split(".com/")[-1].split("/")
 SKILL_PKG = SKILL_NAME.lower().replace("-", "_")
-PLUGIN_ENTRY_POINT = (
-    f"{SKILL_NAME.lower()}.{SKILL_AUTHOR.lower()}={SKILL_PKG}:{SKILL_CLAZZ}"
-)
+PLUGIN_ENTRY_POINT = f"{SKILL_NAME.lower()}={SKILL_PKG}:{SKILL_CLAZZ}"
 # skill_id=package_name:SkillClass
 
 
